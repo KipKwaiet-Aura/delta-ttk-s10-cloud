@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useRef } from 'react';
-import { Shield, Target, ArrowUpDown, Search, RotateCcw, HardHat, Zap, Layers } from 'lucide-react';
+import { Shield, Target, ArrowUpDown, Search, RotateCcw, HardHat, Zap, Layers, Crosshair } from 'lucide-react';
 import type { FilterState, ArmorType, HelmetType, HitPart, WeaponCategory } from '@/types';
 import { getArmorsByLevel } from '@/data/armor';
 import { getHelmetsByLevel } from '@/data/helmets';
@@ -136,6 +136,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onFiltersChange }) =
   const resetFilters = () => onFiltersChange({
     armorTypes: ['mk2'], helmetTypes: ['dich'], hitPart: 'chest',
     bulletSelect: '3级弹', armorLevel: 4, helmetLevel: 4,
+    includeFirstShot: false,
     sortBy: 'ttk', sortOrder: 'asc',
     searchQuery: '', categoryFilter: 'assault_rifle',
   });
@@ -188,6 +189,24 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onFiltersChange }) =
           })}
 
           <div className="flex-1" />
+
+          {/* 计算第一枪TTK 切换 */}
+          <div className="flex items-center gap-1.5 mr-2">
+            <Crosshair size={13} style={{ color: '#888' }} />
+            <span className="text-[12px]" style={{ color: '#888' }}>计算第一枪TTK</span>
+            <button
+              onClick={() => onFiltersChange({ ...filters, includeFirstShot: !filters.includeFirstShot })}
+              className="px-3 py-1 text-[12px] font-mono-data rounded border transition-all duration-200 font-bold"
+              style={{
+                borderColor: filters.includeFirstShot ? '#34d6e0' : '#22252c',
+                backgroundColor: filters.includeFirstShot ? 'rgba(52, 214, 224, 0.12)' : 'rgba(14, 17, 24, 0.5)',
+                color: filters.includeFirstShot ? '#34d6e0' : '#555',
+              }}
+            >
+              {filters.includeFirstShot ? '是' : '否'}
+            </button>
+          </div>
+
           <div className="px-3 py-1.5 rounded border text-[12px] font-mono-data"
             style={{ borderColor: 'rgba(52, 214, 224, 0.3)', backgroundColor: 'rgba(52, 214, 224, 0.08)', color: '#34d6e0' }}>
             穿透率: {(penRate * 100).toFixed(0)}%
