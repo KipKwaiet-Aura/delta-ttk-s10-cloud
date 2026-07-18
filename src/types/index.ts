@@ -117,6 +117,7 @@ export interface FilterState {
   bulletSelect: BulletSelectOption;  // 选择的子弹（含"全部"选项）
   armorLevel: number;                // 护甲等级 0-6
   helmetLevel: number;               // 头盔等级 0-6（独立于护甲）
+  includeFirstShot: boolean;         // 是否计算第一枪TTK（默认否：n-1）
   sortBy: 'ttk' | 'btk' | 'rpm';
   sortOrder: 'asc' | 'desc';
   searchQuery: string;
