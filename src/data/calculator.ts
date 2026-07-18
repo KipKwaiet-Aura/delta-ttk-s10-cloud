@@ -103,6 +103,7 @@ export function calculateDamage(
   hitPart: HitPart,
   bulletType: BulletType,
   helmet?: Helmet,
+  includeFirstShot: boolean = true,
 ): DamageResult {
   const profile = weapon.profiles[bulletType];
   if (!profile) {
@@ -190,7 +191,9 @@ export function calculateDamage(
 
   const killShotsAfterBreak = shots - armorBreakShots;
   const killTimeAfterBreak = (killShotsAfterBreak / weapon.rpm) * 60;
-  const totalTime = (shots / weapon.rpm) * 60;
+  // 计算第一枪：包含第一枪=shots个间隔，不包含=shots-1个间隔（最少0）
+  const effectiveShots = includeFirstShot ? shots : Math.max(shots - 1, 0);
+  const totalTime = (effectiveShots / weapon.rpm) * 60;
   const rating = getRating(totalTime, hasProtection);
 
   return {
