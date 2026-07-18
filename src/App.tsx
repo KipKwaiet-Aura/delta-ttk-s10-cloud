@@ -19,6 +19,7 @@ const DEFAULT_FILTERS: FilterState = {
   bulletSelect: '3级弹',
   armorLevel: 4,
   helmetLevel: 4,
+  includeFirstShot: false,  // 默认不计算第一枪（n-1模式）
   sortBy: 'ttk',
   sortOrder: 'asc',
   searchQuery: '',
@@ -84,12 +85,12 @@ function App() {
         if (filters.hitPart === 'head') {
           for (const helmet of finalHelmets) {
             if (!helmet) continue;
-            calculated.push(calculateDamage(weapon, finalArmors[0], filters.hitPart, bt, helmet));
+            calculated.push(calculateDamage(weapon, finalArmors[0], filters.hitPart, bt, helmet, filters.includeFirstShot));
           }
         } else {
           for (const armor of finalArmors) {
             if (!armor) continue;
-            calculated.push(calculateDamage(weapon, armor, filters.hitPart, bt));
+            calculated.push(calculateDamage(weapon, armor, filters.hitPart, bt, undefined, filters.includeFirstShot));
           }
         }
       }
